@@ -1,6 +1,6 @@
-Hello everyone MICHAEL here, and thanks for downloading the alpha for CamDesk for Linux. Let me just say that there's no need for compiling.
+Hello everyone MICHAEL and ANTONIO here, and thanks for downloading the alpha for CamDesk for Linux. Let us just say that there's no need for compiling.
 
-CamDesk for Linux was coded in Python using PyGTK, and has only been tested on Linux Ubuntu 11.04 i386.
+CamDesk for Linux was coded in Python using PyGTK, and has tested on Linux Ubuntu 11.04 i386, 13.04 amd64 and 14.04 amd64.
 
 Now if you're having any problems running CamDesk for Linux make sure you have V4L (Video4Linux), GStreamer, and Python installed. You must have argparse module installed as well as the following dependencies...
 libgtk2.0-dev
@@ -23,12 +23,23 @@ Camdesk admits the following command line parameters:
 -h/--height: initial height
 -w/--width: initial width
 -d/--device: webcam device
+-f/--flip: flips the image
 
-For example, this commad would open camdesk at 100px from the left of the screen, 50px from the top, in a window 200px height and 400px width using a second videocamera:
-camdesk.py -t 50 -l 100 -h 200 -w 400 -d /dev/video1
+The flip parameters are:
+none                  -  Identity (no rotation)
+clockwise             -  Rotate clockwise 90 degrees
+rotate-180            -  Rotate 180 degrees
+counterclockwise      -  Rotate counter-clockwise 90 degrees
+horizontal-flip       -  Flip horizontally
+vertical-flip         -  Flip vertically
+upper-left-diagonal   -  Flip across upper left/lower right diagonal
+upper-right-diagonal  -  Flip across upper right/lower left diagonal
+
+For example, this commad would open camdesk at 100px from the left of the screen, 50px from the top, in a window 200px height and 400px width, flipping horizontally the image and using a second videocamera:
+camdesk.py -t 50 -l 100 -h 200 -w 400 -f horizontal-flip -d /dev/video1
 
 This would be equivalent:
-camdesk.py --top 50 --left 100 -h 200 -w 400 -d /dev/video1
+camdesk.py --top 50 --left 100 -h 200 -w 400 --flip=horizontal-flip -d /dev/video1
 
 
 NOTE: Before you ever close CamDesk make sure to stop the webcam from running.
