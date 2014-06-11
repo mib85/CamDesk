@@ -85,7 +85,7 @@ class CamDesk(gtk.Window):
    def closeproperties(self, w):
 	 self.win.hide()
 
-   def __init__(self,left,top,width,height,device):
+   def __init__(self,left,top,width,height,device,flip):
 	super(CamDesk, self).__init__()
 	
 	self.set_position(gtk.WIN_POS_CENTER)
@@ -111,7 +111,7 @@ class CamDesk(gtk.Window):
 	self.show_all()
 
 	# Set up the gstreamer pipeline
-	self.player = gst.parse_launch ('v4l2src '+('' if device=='' else 'device='+device)+' ! autovideosink')
+	self.player = gst.parse_launch ('v4l2src '+('' if device=='' else 'device='+device)+' ! videoflip method='+flip+' ! xvimagesink')
 
 	bus = self.player.get_bus()
 	bus.add_signal_watch()
@@ -178,12 +178,18 @@ parser.add_argument('-d','--device',
 					help='Webcam device. Usefull if you have more than one webcam (usually /dev/videoN)',
 					default=''
 					)
+parser.add_argument('-f','--flip',
+                    choices=['none', 'clockwise', 'rotate-180', 'counterclockwise', 'horizontal-flip',
+                             'vertical-flip', 'upper-left-diagonal', 'upper-right-diagonal'],
+					help='Flips the image using gstreamer videoflip',
+					default='none'
+					)
 args = parser.parse_args()
 
 # This is required here to avoid gstreamer processing parameters
 sys.argv[:]=[]
 import gst
 
-CamDesk(args.left,args.top,args.width,args.height,args.device)
+CamDesk(args.left,args.top,args.width,args.height,args.device,args.flip)
 gtk.gdk.threads_init()
 gtk.main()
